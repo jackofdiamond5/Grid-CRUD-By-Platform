@@ -1,0 +1,142 @@
+@page "/"
+@using Grid_Test.Northwind
+@using System.Net
+@inject Northwind.NorthwindDataService northwindDataService
+
+<div class="row-layout master-view-container">
+	<div style="display: flex; flex-flow: column; width: 100%;">
+		<IgbGrid Data="northwindEmployees"
+				 PrimaryKey="EmployeeID"
+				 DisplayDensity="DisplayDensity.Cosy"
+				 AllowFiltering="true"
+				 FilterMode="FilterMode.ExcelStyleFilter"
+				 AutoGenerate="false"
+				 class="ig-typography grid"
+				 master-view-scope
+				 RowEditable="true"
+				 RowAdded="EmployeeAdded"
+				 RowEditDone="EmployeeUpdated"
+				 RowDeleted="EmployeeDeleted">
+			<IgbColumn Field="EmployeeID" DataType="GridColumnDataType.Number" Header="employeeID" Sortable="true" Selectable="false"></IgbColumn>
+			<IgbColumn Field="LastName" DataType="GridColumnDataType.String" Header="lastName" Sortable="true" Selectable="false"></IgbColumn>
+			<IgbColumn Field="FirstName" DataType="GridColumnDataType.String" Header="firstName" Sortable="true" Selectable="false"></IgbColumn>
+			<IgbActionStrip>
+				<IgbGridEditingActions AddRow="true"></IgbGridEditingActions>
+			</IgbActionStrip>
+		</IgbGrid>
+
+		<IgbGrid Data="northwindCustomers"
+				 PrimaryKey="CustomerID"
+				 DisplayDensity="DisplayDensity.Cosy"
+				 AllowFiltering="true"
+				 FilterMode="FilterMode.ExcelStyleFilter"
+				 AutoGenerate="false"
+				 class="ig-typography grid"
+				 master-view-scope
+				 RowEditable="true"
+				 RowAdded="CustomerAdded"
+				 RowEditDone="CustomerUpdated"
+				 RowDeleted="CustomerDeleted">
+			>
+			<IgbColumn Field="CustomerID" DataType="GridColumnDataType.String" Header="customerID" Sortable="true" Selectable="false"></IgbColumn>
+			<IgbColumn Field="CompanyName" DataType="GridColumnDataType.String" Header="companyName" Sortable="true" Selectable="false"></IgbColumn>
+			<IgbColumn Field="ContactName" DataType="GridColumnDataType.String" Header="contactName" Sortable="true" Selectable="false"></IgbColumn>
+			<IgbActionStrip>
+				<IgbGridEditingActions AddRow="true"></IgbGridEditingActions>
+			</IgbActionStrip>
+		</IgbGrid>
+	</div>
+</div>
+
+@code {
+	private Northwind.EmployeesType[] northwindEmployees = Array.Empty<Northwind.EmployeesType>();
+	private Northwind.CustomersType[] northwindCustomers = Array.Empty<Northwind.CustomersType>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		northwindEmployees = await this.northwindDataService.GetEmployeeData() ?? northwindEmployees;
+		northwindCustomers = await this.northwindDataService.GetCustomerData() ?? northwindCustomers;
+	}
+
+	#region Employees
+	protected async Task EmployeeAdded(IgbRowDataEventArgs args)
+	{
+		var employee = args.Detail.Data as EmployeesType;
+		if (employee != null)
+		{
+			var res = await this.northwindDataService.AddEmployee(employee);
+			if (res.StatusCode != HttpStatusCode.OK)
+			{
+				Console.WriteLine($"Failed to add employee for id {employee.EmployeeID}");
+			}
+		}
+	}
+
+	protected async Task EmployeeUpdated(IgbGridEditDoneEventArgs args)
+	{
+		var employee = args.Detail.RowData as EmployeesType;
+		if (employee != null)
+		{
+			var res = await this.northwindDataService.UpdateEmployee(employee);
+			if (res.StatusCode != HttpStatusCode.OK)
+			{
+				Console.WriteLine($"Failed to update employee for id {employee.EmployeeID}");
+			}
+		}
+	}
+
+	protected async Task EmployeeDeleted(IgbRowDataEventArgs args)
+	{
+		var employee = args.Detail.Data as EmployeesType;
+		if (employee != null)
+		{
+			var res = await this.northwindDataService.DeleteEmployee(employee.EmployeeID);
+			if (res.StatusCode != HttpStatusCode.OK)
+			{
+				Console.WriteLine($"Failed to delete employee for id {employee.EmployeeID}");
+			}
+		}
+	}
+	#endregion
+
+	#region Customers
+	protected async Task CustomerAdded(IgbRowDataEventArgs args)
+	{
+		var customer = args.Detail.Data as CustomersType;
+		if (customer != null)
+		{
+			var res = await this.northwindDataService.AddCustomer(customer);
+			if (res.StatusCode != HttpStatusCode.OK)
+			{
+				Console.WriteLine($"Failed to add customer for id {customer.CustomerID}");
+			}
+		}
+	}
+
+	protected async Task CustomerUpdated(IgbGridEditDoneEventArgs args)
+	{
+		var customer = args.Detail.RowData as CustomersType;
+		if (customer != null)
+		{
+			var res = await this.northwindDataService.UpdateCustomer(customer);
+			if (res.StatusCode != HttpStatusCode.OK)
+			{
+				Console.WriteLine($"Failed to update customer for id {customer.CustomerID}");
+			}
+		}
+	}
+
+	protected async Task CustomerDeleted(IgbRowDataEventArgs args)
+	{
+		var customer = args.Detail.Data as CustomersType;
+		if (customer != null)
+		{
+			var res = await this.northwindDataService.DeleteCustomer(customer.CustomerID);
+			if (res.StatusCode != HttpStatusCode.OK)
+			{
+				Console.WriteLine($"Failed to delete customer for id {customer.CustomerID}");
+			}
+		}
+	}
+	#endregion
+}
