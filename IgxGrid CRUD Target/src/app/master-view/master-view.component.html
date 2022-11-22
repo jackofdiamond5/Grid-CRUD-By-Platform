@@ -1,8 +1,8 @@
 <div style="display: flex; flex-flow: column; width: 100%">
-  <igx-grid [data]="northwindCustomers" primaryKey="customerID" displayDensity="cosy" [allowFiltering]="true"
-    filterMode="excelStyleFilter" class="grid" [rowEditable]="true" (rowAdded)="employeeAdded($event)"
-    (rowEditDone)="employeeEdited($event)" (rowDeleted)="employeeDeleted($event)">
-    <igx-column field="customerID" dataType="string" header="customerID" [sortable]="true" [selectable]="false">
+  <igx-grid [data]="northwindCustomers" primaryKey="customerId" displayDensity="cosy" [allowFiltering]="true"
+    filterMode="excelStyleFilter" class="grid" [rowEditable]="true" (rowAdded)="customerAdded($event)"
+    (rowEditDone)="customerEdited($event)" (rowDeleted)="customerDeleted($event)">
+    <igx-column field="customerId" dataType="string" header="customerID" [sortable]="true" [selectable]="false">
     </igx-column>
     <igx-column field="companyName" dataType="string" header="companyName" [sortable]="true" [selectable]="false">
     </igx-column>
@@ -13,10 +13,10 @@
     </igx-action-strip>
   </igx-grid>
 
-  <igx-grid [data]="northwindEmployees" primaryKey="employeeID" displayDensity="cosy" [allowFiltering]="true"
-    [rowEditable]="true" filterMode="excelStyleFilter" class="grid" (rowAdded)="customerAdded($event)"
-    (rowEditDone)="customerEdited($event)" (rowDeleted)="customerDeleted($event)">
-    <igx-column field="employeeID" dataType="number" header="employeeID" [sortable]="true" [selectable]="false">
+  <igx-grid [data]="northwindEmployees" primaryKey="employeeId" displayDensity="cosy" [allowFiltering]="true"
+    [rowEditable]="true" filterMode="excelStyleFilter" class="grid" (rowAdded)="employeeAdded($event)"
+    (rowEditDone)="employeeEdited($event)" (rowDeleted)="employeeDeleted($event)">
+    <igx-column field="employeeId" dataType="number" header="employeeID" [sortable]="true" [selectable]="false">
     </igx-column>
     <igx-column field="lastName" dataType="string" header="lastName" [sortable]="true" [selectable]="false">
     </igx-column>
