@@ -22,28 +22,30 @@ export class MasterViewComponent implements OnInit {
   }
 
   public customerAdded(args: IRowDataEventArgs) {
-    this.northwindDataService.addEmployee(args.data).subscribe(res => {
+    this.northwindDataService.addCustomer(args.data).subscribe((res: any) => {
       // item added
+      args.data.customerId = res.customerId
     });
   }
 
   public customerEdited(args: IGridEditDoneEventArgs) {
     if (!args.isAddRow) {
-      this.northwindDataService.updateEmployee(args.rowData).subscribe(res => {
+      this.northwindDataService.updateCustomer(args.rowData).subscribe(res => {
         // item edited
       });
     }
   }
 
   public customerDeleted(args: IRowDataEventArgs) {
-    this.northwindDataService.deleteEmployee(args.data['customerID']).subscribe(res => {
+    this.northwindDataService.deleteCustomer(args.data['customerId']).subscribe(res => {
       // item deleted
     });
   }
 
   public employeeAdded(args: IRowDataEventArgs) {
-    this.northwindDataService.addEmployee(args.data).subscribe(res => {
+    this.northwindDataService.addEmployee(args.data).subscribe((res: any) => {
       // item added
+      args.data.employeeId = res.employeeId
     });
   }
 
@@ -56,7 +58,7 @@ export class MasterViewComponent implements OnInit {
   }
 
   public employeeDeleted(args: IRowDataEventArgs) {
-    this.northwindDataService.deleteEmployee(args.data['employeeID']).subscribe(res => {
+    this.northwindDataService.deleteEmployee(args.data['employeeId']).subscribe(res => {
       // item deleted
     });
   }
